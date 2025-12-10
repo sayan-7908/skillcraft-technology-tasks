@@ -1,29 +1,54 @@
-let num1 = document.getElementById("span1");
-let num2 = document.getElementById("span2");
+let display = document.getElementById("display");
 
-num1.textContent = 2;
-num2.textContent = 2;
-num1 = 2;
-num2 = 2;
+// Button Handling
+let buttons = document.querySelectorAll("input[type=button]");
 
-let ans = document.getElementById("display");
+buttons.forEach(btn => {
+    btn.addEventListener("click", () => handle(btn.value));
+});
 
-function add() {
-  ans.textContent = 2 + 2;
+// Main Handler
+function handle(value) {
+
+    if (value === "AC") {
+        display.value = "";
+    }
+
+    else if (value === "DE") {
+        display.value = display.value.slice(0, -1);
+    }
+
+    else if (value === "=") {
+        try {
+            display.value = eval(display.value);
+        } catch {
+            display.value = "Error";
+        }
+    }
+
+    else {
+        display.value += value;
+    }
 }
 
-function sub() {
-  ans.textContent = num1 - num2;
-}
+// Keyboard Handling
+document.addEventListener("keydown", (e) => {
+    const key = e.key;
 
-function mul() {
-  ans.textContent = num1 * num2;
-}
-
-function div() {
-  ans.textContent = num1 / num2;
-}
-
-function sum() {
-  ans.textContent = num1 + num2;
-}
+    if (!isNaN(key) || "+-*/.".includes(key)) {
+        display.value += key;
+    }
+    else if (key === "Enter") {
+        try {
+            display.value = eval(display.value);
+        } catch {
+            display.value = "Error";
+        }
+    }
+    else if (key === "Backspace") {
+        display.value = display.value.slice(0, -1);
+    }
+    else if (key === "Escape") {
+        display.value = "";
+    }
+});
